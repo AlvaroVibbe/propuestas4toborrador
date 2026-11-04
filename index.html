@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1E3E59">
+  <meta name="description" content="Un especial periodístico de ChequeaBolivia sobre las promesas de campaña de Rodrigo Paz.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ChequeaBolivia">
+  <meta property="og:title" content="Las promesas de Rodrigo Paz bajo la lupa | ChequeaBolivia">
+  <meta property="og:description" content="Investigamos 20 compromisos que Rodrigo Paz presentó durante su campaña presidencial.">
+  <title>Las promesas de Rodrigo Paz bajo la lupa | ChequeaBolivia</title>
+  <link rel="preload" as="image" href="/portada-rodrigo-paz.webp" fetchpriority="high">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body class="homepage">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/" aria-label="ChequeaBolivia, inicio">
+        <img class="brand-logo" src="/logo-chequeabolivia.png" alt="ChequeaBolivia">
+      </a>
+      <span class="header-kicker">ESPECIAL · CHEQUEO A LAS PROPUESTAS</span>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span> ELECCIONES · SEGUIMIENTO DE PROMESAS</p>
+        <h1 id="hero-title">Las promesas de Rodrigo Paz <em>bajo la lupa</em></h1>
+        <p class="hero-deck">Investigamos 20 compromisos que Rodrigo Paz presentó durante su campaña presidencial para evaluar qué se cumplió, qué sigue pendiente y cuánto se ha avanzado.</p>
+        <a class="text-link" href="#verificaciones" data-explore-verifications>Explora las verificaciones <span aria-hidden="true">↓</span></a>
+      </div>
+    </section>
+
+    <section class="overview wrap" aria-labelledby="overview-title">
+      <div class="section-heading overview-heading">
+        <div><p class="eyebrow">EL ESTADO DE LOS COMPROMISOS</p><h2 id="overview-title">El panorama, en cifras</h2></div>
+        <p class="overview-total" id="published-total" aria-live="polite"></p>
+      </div>
+      <div class="stats-grid" id="stats-grid" aria-live="polite"></div>
+      <p class="empty-summary" id="empty-summary" hidden>Las verificaciones se publicarán aquí cuando la redacción incorpore los primeros análisis.</p>
+    </section>
+
+    <section class="results wrap" id="verificaciones" tabindex="-1" aria-labelledby="results-title">
+      <div class="section-heading results-heading">
+        <div><p class="eyebrow">CONSULTA POR RESULTADO</p><h2 id="results-title">Las verificaciones</h2></div>
+        <p id="results-count" class="results-count" aria-live="polite"></p>
+      </div>
+      <nav class="filter-bar" id="filter-bar" aria-label="Filtrar verificaciones por categoría">
+        <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true"><span class="filter-all-icon" aria-hidden="true">☷</span><span>Todas las verificaciones</span><span class="filter-count" data-count="all">0</span></button>
+      </nav>
+      <div class="card-grid" id="verification-list" aria-live="polite"></div>
+      <div class="empty-list" id="empty-list">
+        <span class="empty-list-mark" aria-hidden="true">—</span>
+        <h3>Aún no hay verificaciones publicadas</h3>
+        <p>El listado se actualizará cuando la redacción incorpore los artículos y su evaluación.</p>
+      </div>
+    </section>
+
+    <section class="method wrap" aria-labelledby="method-title">
+      <div class="method-intro"><p class="eyebrow">CÓMO LEER LOS RESULTADOS</p><h2 id="method-title">¿Qué significa cada categoría?</h2><p>Las evaluaciones siguen el estado de cada compromiso según las acciones y resultados observados.</p></div>
+      <div class="definitions-grid" id="definitions-grid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner wrap"><a class="brand brand-footer" href="/" aria-label="ChequeaBolivia, inicio"><img class="brand-logo" src="/logo-chequeabolivia.png" alt="ChequeaBolivia"></a><p>Un especial de <strong>Chequea Bolivia</strong></p><a href="#contenido" class="back-top">Volver arriba ↑</a></div>
+  </footer>
+</body>
+</html>
