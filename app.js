@@ -44,10 +44,11 @@ async function selectFilter(nextFilter) {
   const cards = [...list.querySelectorAll('.verification-card')];
   const order = ['all', ...categories.map((category) => category.id)];
   const direction = order.indexOf(nextFilter) >= order.indexOf(activeFilter) ? 1 : -1;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   activeFilter = nextFilter;
   updateActiveFilterButtons();
 
-  if (!cards.length || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (reduceMotion) {
     render();
     return;
   }
@@ -63,21 +64,54 @@ async function selectFilter(nextFilter) {
     );
     return animation.finished.catch(() => {});
   });
+  if (cards.length === 0 && !emptyList.hidden) {
+    emptyList.getAnimations().forEach((animation) => animation.cancel());
+    const exit = emptyList.animate(
+      [
+        { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' },
+        { opacity: 0, transform: `translate3d(${-direction * 20}px, -10px, 0) scale(.985)` }
+      ],
+      { duration: 210, easing: 'cubic-bezier(.4, 0, 1, 1)', fill: 'forwards' }
+    );
+    exits.push(exit.finished.catch(() => {}));
+  }
   await Promise.all(exits);
   if (token !== filterTransition) return;
 
   render();
-  const incoming = [...list.querySelectorAll('.verification-card')];
-  incoming.forEach((card, index) => {
-    const animation = card.animate(
+  if (emptyList.hidden) {
+    list.querySelectorAll('.verification-card').forEach((card, index) => {
+      const animation = card.animate(
+        [
+          { opacity: 0, transform: `translate3d(${direction * 26}px, 0, 0) scale(.985)` },
+          { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' }
+        ],
+        { duration: 470, delay: Math.min(index * 30, 210), easing: 'cubic-bezier(.2, .65, .25, 1)', fill: 'both' }
+      );
+      animation.finished.then(() => animation.cancel()).catch(() => {});
+    });
+  } else {
+    const reveal = emptyList.animate(
       [
-        { opacity: 0, transform: `translate3d(${direction * 26}px, 0, 0) scale(.985)` },
+        { opacity: 0, transform: `translate3d(${direction * 24}px, 14px, 0) scale(.985)` },
         { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' }
       ],
-      { duration: 470, delay: Math.min(index * 30, 210), easing: 'cubic-bezier(.2, .65, .25, 1)', fill: 'both' }
+      { duration: 520, easing: 'cubic-bezier(.2, .65, .25, 1)', fill: 'both' }
     );
-    animation.finished.then(() => animation.cancel()).catch(() => {});
-  });
+    reveal.finished.then(() => reveal.cancel()).catch(() => {});
+    if (emptyList.classList.contains('empty-list--attention')) {
+      const mark = emptyList.querySelector('.empty-list-mark');
+      const emphasis = mark.animate(
+        [
+          { transform: 'scale(.65) rotate(-12deg)' },
+          { transform: 'scale(1.08) rotate(3deg)', offset: .72 },
+          { transform: 'scale(1) rotate(0deg)' }
+        ],
+        { duration: 500, delay: 120, easing: 'cubic-bezier(.2, .8, .2, 1)' }
+      );
+      emphasis.finished.then(() => emphasis.cancel()).catch(() => {});
+    }
+  }
 }
 
 function card(item) {
@@ -110,6 +144,9 @@ function render() {
   const shown = activeFilter === 'all' ? published : published.filter((item) => item.status === activeFilter);
   list.innerHTML = shown.map(card).join('');
   emptyList.hidden = shown.length !== 0;
+  const fulfilledEmpty = activeFilter === 'cumplida' && shown.length === 0;
+  emptyList.classList.toggle('empty-list--attention', fulfilledEmpty);
+  emptyList.querySelector('.empty-list-mark').textContent = fulfilledEmpty ? '!' : '—';
   const fulfilledEmptyMessage = 'De acuerdo a nuestra metodología, ninguna de las propuestas que hizo la dupla Rodrigo Paz - Edmond Lara en campaña fue cumplida hasta ahora. Puede navegar en las pestañas del menú arriba para ver el resto de propuestas adelantadas, demoradas o incumplidas.';
   emptyList.querySelector('h3').textContent = activeFilter === 'cumplida' && shown.length === 0 ? 'Ninguna propuesta cumplida hasta ahora' : published.length === 0 ? 'Aún no hay verificaciones publicadas' : 'No hay verificaciones en esta categoría';
   emptyList.querySelector('p').textContent = activeFilter === 'cumplida' && shown.length === 0 ? fulfilledEmptyMessage : published.length === 0 ? 'El listado se actualizará cuando la redacción incorpore los artículos y su evaluación.' : 'Prueba otra categoría o vuelve a todas las verificaciones.';
